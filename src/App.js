@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Pregunta from "./components/Pregunta";
 import Formulario from "./components/Formulario";
 import Listado from "./components/Listado";
+import ControlPresupuesto from "./components/ControlPresupuesto";
 
 function App() {
 
@@ -9,11 +10,21 @@ function App() {
     const [restante, updateRestante] = useState(0);
     const [mostrarPregunta, updatePregunta] = useState(true);
     const [gastos, updateGastos] = useState([]);
-
+    const [gasto, updateGasto] = useState({})
+    const [crearGasto, updateCreatGasto] = useState(false);
+    //UseEffect para actualizar el restante
+    useEffect(() => {
+        //Agrega nuevo presupuesto
+        if (crearGasto) {
+            updateGastos([...gastos, gasto]);
+        }
+        //resta del presupuesto actual
+        let presupuestoRestante = restante - gasto.cantidad;
+        updateRestante(presupuestoRestante);
+        updateCreatGasto(false);
+    }, [gasto])
     //Cuando se añadan gastos
-    const agregarNuevoGasto = gasto =>{
-        updateGastos([...gastos, gasto])
-    }
+
 
     return (
         <div className="container">
@@ -30,11 +41,17 @@ function App() {
                     (<div className="row">
                             <div className="one-half column">
                                 <Formulario
-                                    agregarNuevoGasto={agregarNuevoGasto}/>
+                                    updateGasto={updateGasto}
+                                    updateCreatGasto={updateCreatGasto}
+                                />
                             </div>
                             <div className="one-half column">
                                 <Listado
                                     gastos={gastos}/>
+                                <ControlPresupuesto
+                                    presupuesto={presupuesto}
+                                    restante={restante}
+                                />
                             </div>
                         </div>
                     )}

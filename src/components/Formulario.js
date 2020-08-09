@@ -8,7 +8,7 @@ Formulario.propTypes = {
     
 };
 
-function Formulario({agregarNuevoGasto}) {
+function Formulario({updateGasto,updateCreatGasto}) {
 
     const [nombre, updateNombre] = useState('');
     const [cantidad, updateCantidad] = useState(0);
@@ -28,7 +28,8 @@ function Formulario({agregarNuevoGasto}) {
             cantidad,
             id:shortid.generate()
         }
-        agregarNuevoGasto(gasto);
+        updateGasto(gasto);
+        updateCreatGasto(true);
         //Resetear form
 
         updateNombre('');
@@ -41,7 +42,7 @@ function Formulario({agregarNuevoGasto}) {
            <h2>Agregar tus gastos aquí</h2>
             {error? <Error mensaje="Ambos campos son necesarios"/> : null}
             <div className="campo">
-                <label for>Nombre del gasto</label>
+                <label>Nombre del gasto</label>
                 <input
                     type="text"
                     className="u-full-width"
